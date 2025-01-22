@@ -4,6 +4,6 @@ This repo describes the interface used for the permament [comon](https://comon.g
 ## Background: storing data
 ([source](https://docs.arduino.cc/tutorials/portenta-x8/datalogging-iot/))
 *  The broker: Setting up an MQTT broker ([Mosquito](https://mosquitto.org/))
-*  The server: script
+*  The server: node-RED
 *  The database:InfluxDB
 *  The dashboard: Grafana
