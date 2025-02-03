@@ -1,6 +1,22 @@
 # Comon Expo Interface
 This repo describes the interface used for the permament [comon](https://comon.gent/en) expo in [De Krook](https://dekrook.be/en/). Visitors are presented with questions using tangible buttons.
 
+## Components
+**Tech**
+* The core of the system is a raspberry pi
+* Connected to 3 arcade buttons
+* Connected to a screen with PyGame
+**Construction**
+* The pie is mounted on the screen
+* Sandwiched between two panels in the form of a robot, with a cutout for the screen and the buttons
+* And a space for velcro call outs with questions
+* A glass plate protects the screen
+* Held together by a wooden frame
+* On a solid foot
+  
+**Functions**
+* 4 questions
+  
 ## Background: storing data
 We can send data back and forth using public MQTT brokers, but we want to introducce two new challenges: 
 1.  How can we set-up a local MQTT broker?
