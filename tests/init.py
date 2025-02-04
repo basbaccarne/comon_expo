@@ -1,4 +1,5 @@
-# This script ...
+# This script is used to test the interface of the common expo
+# It is a simple interface that shows a question mark and then switches to a response screen when the space key is pressed
 
 import pygame
 import random
@@ -104,8 +105,6 @@ while running:
                 pygame.draw.rect(screen, WHITE, rect_noopinion, border_radius=40)
                 pygame.display.flip()
     
-
-    # Do stuff
 
     # Limit the frame rate
     clock.tick(FPS)
