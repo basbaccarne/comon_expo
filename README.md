@@ -1,21 +1,29 @@
 # Comon Expo Interface
-This repo describes the interface used for the permament [comon](https://comon.gent/en) expo in [De Krook](https://dekrook.be/en/). Visitors are presented with questions using tangible buttons.
+This repo describes the interface used for the permament [comon](https://comon.gent/en) expo in [De Krook](https://dekrook.be/en/).    
+
+Visitors are presented with questions using tangible buttons (experience has learned that touch screens trigger lesss interaction in semi-public places).
+These buttons are embedded in robot hands. The robot asks the visitors a question and they can high five the robot to indicate wether they agree, disagree or have no opinion on the subject. Next the vistor is presented with the responses of the other repondents.   
 
 ## Components
-**Tech**
-* The core of the system is a raspberry pi
-* Connected to 3 arcade buttons
-* Connected to a screen with PyGame
 **Construction**
-* The pie is mounted on the screen
-* Sandwiched between two panels in the form of a robot, with a cutout for the screen and the buttons
-* And a space for velcro call outs with questions
-* A glass plate protects the screen
-* Held together by a wooden frame
-* On a solid foot
+* The main structure is a robot
+  * With a **front panel** and a **back panel** (see [design](https://www.canva.com/design/DAGePvjJkDo/3mGJuS1pnpP1t1xx3RmYJg/edit))
+  * Held together by a **wooden frame**
+  * Mounted on a **heavy foot** of a sun umbrella
+  * With cutouts for the buttons (in the hands) and a screen in its chest
+* A **Raspberry pi** is mounted on the back of a **screen** (offical [raspi monitor](https://www.raspberrypi.com/products/raspberry-pi-monitor/)), with a [3D printed connector](https://a360.co/40PoLU7)
+* The screen and Raspi are mounted behind the cutout using [low](https://a360.co/3WMRYOa) and [high](https://a360.co/4jMSnKw) mounting pieces
+* The questions are regularly updated on a printed callout box
   
-**Functions**
-* 4 questions
+**Electonics**
+* The core of the system is a raspberry pi
+* Connected to 3 **arcade buttons**
+* Connected to a screen with PyGame
+
+**Code**   
+The raspi runs a PyGame on boot ([splash](img/splash.png)). It listens to the buttons and stores the votes in a json file. The script is managed in 3 scenes: (1) listening to input (question state), (2) an animation after button press (response animation state) and (3) the response screen that shows the percentages of votes (response state). Scene 1 > 2 is triggered by a button press, Scene 2 > 3 through a timer and Scene 3 > 1 through a second timer. Changing and resetting campaigns in manages by defining a new json file name.   
+
+⌨️ [Main Robot Code](src/main)
   
 ## Background: storing data
 We can send data back and forth using public MQTT brokers, but we want to introducce two new challenges: 
