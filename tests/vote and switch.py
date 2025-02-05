@@ -50,6 +50,7 @@ pygame.mouse.set_visible(False)
 # GLOBAL VARIABLES
 state = "question"
 old_state = state
+timer = 0
 
 # FUNCTIONS
 def load_votes():
@@ -66,10 +67,10 @@ def save_votes(votes):
     with open(VOTE_FILE, 'w') as file:
         json.dump(votes, file)
         
-def drawLine(point1, point2, point3):
+def drawLine(point1, point2, point3, color):
     """draw a line between 3 points"""
-    pygame.draw.line(screen, WHITE, point1, point2, 5)
-    pygame.draw.line(screen, WHITE, point2, point3, 5)
+    pygame.draw.line(screen, color, point1, point2, 5)
+    pygame.draw.line(screen, color, point2, point3, 5)
         
 
 
@@ -85,6 +86,12 @@ def mainQuestion():
     screen.fill(BG_COLOR)
     screen.blit(rotated_line1, line1_rect)
     screen.blit(rotated_line2, line2_rect)
+
+    drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), WHITE)
+    drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2),WHITE)
+    drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2), WHITE)
+
+    pygame.display.flip()
 
 def responseScreen():
     """Display the response screen"""
@@ -104,6 +111,18 @@ def responseScreen():
     pygame.draw.rect(screen, WHITE, rect_noopinion, border_radius=40)
     pygame.display.flip()
 
+def response_animation(button):
+    """Animate the response screen"""
+    if button == 1:
+        drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), LINE_COLOR)
+        pygame.display.update()
+    if button == 2:
+        drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), LINE_COLOR)
+        pygame.display.update()
+    if button == 3:
+        drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2), LINE_COLOR)
+        pygame.display.update()
+        
 
 # PRELOADING
 
@@ -113,11 +132,6 @@ print("Current votes:", votes)
 
 # Preload first screen
 mainQuestion()
-drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2))
-drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2))
-drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2))
-
-pygame.display.flip()
 
 # MAIN GAME LOOP
 
@@ -136,60 +150,71 @@ while running:
             print(f"State: {state}")
             if state == "question":
                 mainQuestion()
-                drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2))
-                drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2))
-                drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2))
-
-                pygame.display.flip()
-
             elif state == "response":
                 responseScreen()
 
     # STATE SWICHER (button version)
+    
+    # STATE QUESTION
     # listen to the buttons when the systel is in the question state
     if state == "question":
         if button1.is_pressed:
             # count votes
             votes["button1"] += 1
+            pressed = 1
             print("Button 1 pressed.")
             print("Total votes: [1] ", votes["button1"], " || [2] ", votes["button2"], " || [3] ", votes["button3"])
             save_votes(votes)
             
             # change state
-            state = "response"
-            
-            # debounce
-            sleep(0.0)  
+            timer = pygame.time.get_ticks() / 1000
+            state = "response_animation"
+            print(f"State: {state}")
             
         if button2.is_pressed:
             # count votes
             votes["button2"] += 1
+            pressed = 2
             print("Button 2 pressed.")
             print("Total votes: [1] ", votes["button1"], " || [2] ", votes["button2"], " || [3] ", votes["button3"])
             save_votes(votes)
             
             # change state
-            state = "response"
-            
-            # debounce
-            sleep(0.0)
+            timer = pygame.time.get_ticks() / 1000
+            state = "response_animation"
+            print(f"State: {state}")            
             
         if button3.is_pressed:
             # count votes
             votes["button3"] += 1
+            pressed = 3
             print("Button 3 pressed.")
             print("Total votes: [1] ", votes["button1"], " || [2] ", votes["button2"], " || [3] ", votes["button3"])
             save_votes(votes)
             
             # change state
-            state = "response"
-            
-            # debounce
-            sleep(0.0)
+            timer = pygame.time.get_ticks() / 1000
+            state = "response_animation"     
+            print(f"State: {state}")
 
-        if state == "response":
+    # STATE RESPONSE ANIMATION
+    if state == "response_animation":
+        response_animation(pressed)
+
+        if pygame.time.get_ticks() / 1000 - timer > 2:
+            state = "response"
+            print(f"State: {state}")
+            timer = pygame.time.get_ticks() / 1000
             responseScreen()
-    
+
+    # STATE RESPONSE SCREEN
+    if state == "response":
+        if pygame.time.get_ticks() / 1000 - timer > 2:
+            state = "question"
+            print(f"State: {state}")
+            timer = pygame.time.get_ticks()
+            mainQuestion()
+            
 
     # Limit the frame rate
     clock.tick(FPS)
