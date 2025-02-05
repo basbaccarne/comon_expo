@@ -11,6 +11,8 @@ import json
 import random
 import time
 from time import sleep
+import math
+import pygame.gfxdraw
 from gpiozero import Button
 from pathlib import Path
 
@@ -40,13 +42,25 @@ screen = pygame.display.set_mode(
 
 # PATHS
 SCRIPT_DIR = Path(__file__).parent
+
 DATA_DIR = SCRIPT_DIR.parent / 'data'
+VOTE_FILE = DATA_DIR / active_campaign
 FONT_PATH = DATA_DIR / 'TT Firs Neue Regular.ttf'
 VOTE_FILE = DATA_DIR / active_campaign
 
+IMG_DIR = SCRIPT_DIR.parent / 'img'
+GREEN_IMG = IMG_DIR / 'line_green.png'
+RED_IMG = IMG_DIR / 'line_red.png'
+YELLOW_IMG = IMG_DIR / 'line_yellow.png'
+
 # DESIGN
 WHITE = (255, 255, 255)
-BG_COLOR = (12, 37, 84)
+BG_COLOR = (102, 203, 187)
+DARKBLUE = (27, 60, 127)
+GREEN = (0, 191, 98)
+RED = (255, 49, 49)
+GREEN = (0, 191, 98)
+YELLOW = (255, 222, 89)
 LINE_COLOR = (200, 100, 50)
 FONT = pygame.font.Font(FONT_PATH, 100)
 pygame.mouse.set_visible(False)
@@ -54,6 +68,8 @@ pygame.mouse.set_visible(False)
 # GLOBAL VARIABLES
 state = "question"
 timer = 0
+circle_radius = 0
+pressed = None
 
 # FUNCTIONAL FUNCTIONS
 def load_votes():
@@ -94,11 +110,6 @@ def save_votes(votes):
     """Save vote counts to file"""
     with open(VOTE_FILE, 'w') as file:
         json.dump(votes, file)
-        
-def drawLine(point1, point2, point3, color):
-    """draw a line between 3 points"""
-    pygame.draw.line(screen, color, point1, point2, 5)
-    pygame.draw.line(screen, color, point2, point3, 5)
 
 
 # STATE FUNCTIONS #
@@ -112,8 +123,8 @@ def main_question():
     screen.fill(BG_COLOR)
 
     # text
-    line1 = FONT.render("?", True, WHITE)
-    line2 = FONT.render(" ", True, WHITE)
+    line1 = FONT.render("?", True, DARKBLUE)
+    line2 = FONT.render(" ", True, DARKBLUE)
     rotated_line1 = pygame.transform.rotate(line1, 90)
     rotated_line2 = pygame.transform.rotate(line2, 90)
     line1_rect = rotated_line1.get_rect(center=(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2))
@@ -121,46 +132,105 @@ def main_question():
     screen.blit(rotated_line1, line1_rect)
     screen.blit(rotated_line2, line2_rect)
 
-    # lines
-    drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), WHITE)
-    drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2),WHITE)
-    drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2), WHITE)
+    # end of the lines (x, y, reverse)
+    screen.blit(line_green, (100, 0))
+    screen.blit(line_red, (1500, 100))
+    screen.blit(line_yellow, (1000, 600))
 
     # render
     pygame.display.flip()
 
 # STATE: RESPONSE ANIMATION
-def response_animation(button):
+def response_animation(button, circle_radius):
     """Animate the response screen"""
-
-    # change line color of the selected option
-    if button == 1:
-        drawLine((100,0),(400,SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), LINE_COLOR)
-    if button == 2:
-        drawLine((100,SCREEN_HEIGHT),(400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2-200,SCREEN_HEIGHT//2), LINE_COLOR)
-    if button == 3:
-        drawLine((SCREEN_WIDTH-100,SCREEN_HEIGHT),(SCREEN_WIDTH-400,SCREEN_HEIGHT-SCREEN_HEIGHT//4),(SCREEN_WIDTH//2+100,SCREEN_HEIGHT//2), LINE_COLOR)
     
+    color = (0,0,0)
+    position = (0,0)
+
+# set starting position and color
+    if button == 1:
+        position = (100, 0)
+        color = GREEN
+    if button == 2:
+        position = (1500, 100)
+        color = RED
+    if button == 3:
+        position = (1000, 600)
+        color = YELLOW
+
+    # draw circle
+    pygame.draw.circle(screen, color, position, circle_radius)
+
     # render
     pygame.display.update()
 
 # STATE: RESPONSE
 def response_screen():
     """Display the response screen (static)"""
+    global votes, pressed
+
+    # calculate percentages (the numbers)
+    total=votes["button1"]+votes["button2"]+votes["button3"]
+    agree = votes["button1"]/total*100
+    disagree = votes["button2"]/total*100
+    noopinion = votes["button3"]/total*100
+
+    # padding & fixed design parameters
+    inner_padding = 20 # padding between rectangles
+    outer_padding = 40 # padding from the edge of the screen
+    fixed_width = 1000 # bar width
+
+    # calculate heights
+    total_container_height = SCREEN_WIDTH - outer_padding * 2 # outer bounds
+    centered_position = SCREEN_HEIGHT // 2 - fixed_width // 2 # center for the y axis
+
+    agree_height     = (total_container_height * agree / 100) - inner_padding
+    disagree_height  = (total_container_height * disagree / 100) - inner_padding
+    noopinion_height = (total_container_height * noopinion / 100) - inner_padding
 
     # background
     screen.fill(BG_COLOR)
 
-    # rectangles
-    rect_agree = pygame.Rect(0, 0, 500, 400)
-    rect_agree.center = (SCREEN_WIDTH // 1.3 , SCREEN_HEIGHT // 2)
-    rect_disagree = pygame.Rect(0, 0, 450, 400)
-    rect_disagree.center = (SCREEN_WIDTH //2 , SCREEN_HEIGHT // 2)
-    rect_noopinion = pygame.Rect(0, 0, 600, 400)
-    rect_noopinion.center = (400 , SCREEN_HEIGHT // 2)
+    # result rectangles (x, y, width, height)
+    rect_agree = pygame.Rect(
+        outer_padding, centered_position, 
+        agree_height, fixed_width)
+    rect_disagree = pygame.Rect(
+        outer_padding + agree_height + inner_padding, centered_position, 
+        disagree_height, fixed_width)
+    rect_noopinion = pygame.Rect(
+        outer_padding + agree_height + inner_padding + disagree_height + inner_padding, centered_position, 
+        noopinion_height, fixed_width)
     pygame.draw.rect(screen, WHITE, rect_agree, border_radius=40)
+    if pressed == 1:
+        pygame.draw.rect(screen, DARKBLUE, rect_agree, border_radius=40)
     pygame.draw.rect(screen, WHITE, rect_disagree, border_radius=40)
+    if pressed == 2:
+        pygame.draw.rect(screen, DARKBLUE, rect_disagree, border_radius=40)
     pygame.draw.rect(screen, WHITE, rect_noopinion, border_radius=40)
+    if pressed == 3:
+        pygame.draw.rect(screen, DARKBLUE, rect_noopinion, border_radius=40)
+
+    # text
+    font = pygame.font.Font(FONT_PATH, 50)
+    text_agree = font.render(f"{int(agree)}%", True, BG_COLOR)
+    text_disagree = font.render(f"{int(disagree)}%", True, BG_COLOR)
+    text_noopinion = font.render(f"{int(noopinion)}%", True, BG_COLOR)
+
+    # rotate text
+    rotated_text_agree = pygame.transform.rotate(text_agree, 90)
+    rotated_text_disagree = pygame.transform.rotate(text_disagree, 90)
+    rotated_text_noopinion = pygame.transform.rotate(text_noopinion, 90)
+
+    # center text
+    text_agree_rect = rotated_text_agree.get_rect(center=rect_agree.center)
+    text_disagree_rect = rotated_text_disagree.get_rect(center=rect_disagree.center)
+    text_noopinion_rect = rotated_text_noopinion.get_rect(center=rect_noopinion.center)
+
+    # render text
+    screen.blit(rotated_text_agree, text_agree_rect)
+    screen.blit(rotated_text_disagree, text_disagree_rect)
+    screen.blit(rotated_text_noopinion, text_noopinion_rect)
 
     # render
     pygame.display.flip()
@@ -173,9 +243,16 @@ def response_screen():
 votes = load_votes()
 print("Current votes:", votes)
 
+# Load images (line peaces) // rotate (rescale if needed)
+line_green = pygame.image.load(GREEN_IMG).convert_alpha()
+line_green = pygame.transform.rotate(line_green, 90)
+line_red = pygame.image.load(RED_IMG).convert_alpha()
+line_red = pygame.transform.rotate(line_red, 90)
+line_yellow = pygame.image.load(YELLOW_IMG).convert_alpha()
+line_yellow = pygame.transform.rotate(line_yellow, 90)
+
 # Preload first screen
 main_question()
-
 
 # MAIN GAME LOOP #
 ##################
@@ -198,21 +275,28 @@ while running:
     if state == "question":
         if button1.is_pressed:
             count_votes(1)
+            pressed = 1
+            circle_radius = 0
             change_state("response_animation")
-            response_animation(pressed)
             
         if button2.is_pressed:
             count_votes(2)
+            pressed = 2
+            circle_radius = 0
             change_state("response_animation")
-            response_animation(pressed)         
             
         if button3.is_pressed:
             count_votes(3)
+            pressed = 3
+            circle_radius = 0
             change_state("response_animation")
-            response_animation(pressed)
 
     # STATE: RESPONSE_ANIMATION
     if state == "response_animation":
+        growth_speed = 50
+        circle_radius += growth_speed
+        response_animation(pressed, circle_radius)
+
         # wait 2 seconds, then change state
         if pygame.time.get_ticks() / 1000 - timer > 2:
             change_state("response")
@@ -221,7 +305,7 @@ while running:
     # STATE: RESPONSE SCREEN
     if state == "response":
         # wait 2 seconds, then change state
-        if pygame.time.get_ticks() / 1000 - timer > 2:
+        if pygame.time.get_ticks() / 1000 - timer > 4:
             change_state("question")
             main_question()
             
