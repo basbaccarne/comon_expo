@@ -196,10 +196,10 @@ def response_screen():
         outer_padding, centered_position, 
         agree_height, fixed_width)
     rect_disagree = pygame.Rect(
-        outer_padding + agree_height + inner_padding, centered_position, 
+        outer_padding + agree_height + inner_padding * 1.5, centered_position, 
         disagree_height, fixed_width)
     rect_noopinion = pygame.Rect(
-        outer_padding + agree_height + inner_padding + disagree_height + inner_padding, centered_position, 
+        outer_padding + agree_height + inner_padding * 1.5 + disagree_height + inner_padding * 1.5 , centered_position, 
         noopinion_height, fixed_width)
     pygame.draw.rect(screen, WHITE, rect_agree, border_radius=40)
     if pressed == 1:
