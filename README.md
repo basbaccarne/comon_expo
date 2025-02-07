@@ -117,7 +117,7 @@ The tech stack to to this has 4 components:
   * Also give grafana the name of the influx db database & select the GET HTTP method
  
 
-# Background: booting in PyGame
+## Background: booting in PyGame
 If you create a PyGame and you have a Raspi dedicated to running that pygame (in this case: the pi is automatically powered down and powered up at the end and beginning of each day). This is how you create a custom boot that directly opend the python script and first shows a custom splash screen.   
 
 **Step 1. Create a service**
@@ -161,7 +161,7 @@ To monitor the logs
 ```console
 journalctl -u comon_expo.service -f
 ```
-# Background: custom splash
+## Background: custom splash
 
 **step 2. Hide boot messages for a cleaner look**   
 
