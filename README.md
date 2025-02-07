@@ -159,9 +159,15 @@ If you update the python code:
 sudo systemctl restart comon_expo.service
 ```
 To monitor the logs
+> Live
 ```console
 journalctl -u comon_expo.service -f
 ```
+> Last x minutes
+```console
+sudo journalctl -u comon_expo.service --since "5 minutes ago"
+```
+ 
 ## Background: custom splash
 
 **step 2. Hide boot messages for a cleaner look**   
