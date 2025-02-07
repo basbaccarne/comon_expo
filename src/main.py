@@ -16,6 +16,9 @@ import pygame.gfxdraw
 from gpiozero import Button
 from pathlib import Path
 
+import os
+os.environ['PULSE_SERVER'] = ''
+
 # GPIO button setup
 # (buttons are connected to ground and pins 4, 14 and 25)
 button1 = Button(4)
