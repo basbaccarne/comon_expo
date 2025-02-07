@@ -166,7 +166,9 @@ journalctl -u comon_expo.service -f
 
 **step 2. Hide boot messages for a cleaner look**   
 
-By editting the `cmdline.txt` file
+- [Overwite the original splash image](https://www.tomshardware.com/how-to/custom-raspberry-pi-splash-screen)
+
+Edit the `cmdline.txt` file
 ```console
 sudo nano /boot/firmware/cmdline.txt
 ```
