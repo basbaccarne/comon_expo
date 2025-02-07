@@ -124,7 +124,8 @@ If you create a PyGame and you have a Raspi dedicated to running that pygame (in
 ```console
 sudo nano /etc/systemd/system/comon_expo.service
 ```
-add the following content in the file:
+add the following content in the file:   
+*(change Restart=always to Restart=no if you want to work on the prototype)*
 ```
 [Unit]
 Description=Comon Expo App
