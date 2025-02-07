@@ -13,12 +13,13 @@ These buttons are embedded in robot hands. The robot asks the visitors a questio
   * With cutouts for the buttons (in the hands) and a screen in its chest
 * A **Raspberry pi** is mounted on the back of a **screen** (offical [raspi monitor](https://www.raspberrypi.com/products/raspberry-pi-monitor/)), with a [3D printed connector](https://a360.co/40PoLU7)
 * The screen and Raspi are mounted behind the cutout using [low](https://a360.co/3WMRYOa) and [high](https://a360.co/4jMSnKw) mounting pieces
-* The questions are regularly updated on a printed callout box
+* The questions are regularly updated on a printed callout box strung up to the ceiling next to the robot
   
 **Electonics**
 * The core of the system is a raspberry pi
 * Connected to 3 **arcade buttons**
 * Connected to a screen with PyGame
+* In V1 the leds of the buttons are connected to a seperate 12V connection with a Female Connector DC Power Plug Adapter and a universal variable AC/DC adapter
 
 **Code**   
 The raspi runs a PyGame on boot ([splash](img/splash.png)). It listens to the buttons and stores the votes in a json file. The script is managed in 3 scenes: (1) listening to input (question state), (2) an animation after button press (response animation state) and (3) the response screen that shows the percentages of votes (response state). Scene 1 > 2 is triggered by a button press, Scene 2 > 3 through a timer and Scene 3 > 1 through a second timer. Changing and resetting campaigns in manages by defining a new json file name.   
@@ -114,7 +115,72 @@ The tech stack to to this has 4 components:
   * The default for the first login is admin / admin
   * The data source is an influxdb database on url `http://<ip>:8086`
   * Also give grafana the name of the influx db database & select the GET HTTP method
-  
+ 
+
+# Background: booting in PyGame
+If you create a PyGame and you have a Raspi dedicated to running that pygame (in this case: the pi is automatically powered down and powered up at the end and beginning of each day). This is how you create a custom boot that directly opend the python script and first shows a custom splash screen.   
+
+**Step 1. Create a service**
+```console
+sudo nano /etc/systemd/system/comon_expo.service
+```
+add the following content in the file:
+```
+[Unit]
+Description=Comon Expo App
+After=graphical.target
+
+[Service]
+User=comon
+WorkingDirectory=/home/comon/comon_expo/src
+ExecStart=/usr/bin/python3 /home/comon/comon_expo/src/main.py
+Restart=always
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/comon/.Xauthority
+Environment=XDG_RUNTIME_DIR=/run/user/<UID>
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+```
+enable this service:
+```console
+sudo systemctl enable comon_expo.service
+```
+testrun this service:
+```console
+sudo -u comon /usr/bin/python3 /home/comon/comon_expo/src/main.py
+```
+If you update the python code:
+```console
+sudo systemctl restart comon_expo.service
+```
+To monitor the logs
+```console
+journalctl -u comon_expo.service -f
+```
+# Background: custom splash
+
+**step 2. Hide boot messages for a cleaner look**   
+
+By editting the `cmdline.txt` file
+```console
+sudo nano /boot/firmware/cmdline.txt
+```
+remove any instances of 
+```
+console=tty1 console=serial0
+```
+To hide text during boot, edit ´/boot/config.txt´
+```console
+sudo nano /boot/firmware/config.txt
+```
+add the following:
+```
+disable_splash=1
+```
 
 # Sources
 [^1]: [Arduino Documentation](https://docs.arduino.cc/tutorials/portenta-x8/datalogging-iot/)
