@@ -170,9 +170,9 @@ By editting the `cmdline.txt` file
 ```console
 sudo nano /boot/firmware/cmdline.txt
 ```
-remove any instances of 
+use something like:
 ```
-console=tty1 console=serial0
+console=tty1 quit splash plymouth.ignore-serial-consoles root=PARTUUID=3a626d89-02 rootfstype=ext4 fsck.repair=yes rootwait loglevel=0
 ```
 To hide text during boot, edit ´/boot/config.txt´
 ```console
