@@ -137,7 +137,7 @@ ExecStart=/usr/bin/python3 /home/comon/comon_expo/src/main.py
 Restart=always
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=/home/comon/.Xauthority
-Environment=XDG_RUNTIME_DIR=/run/user/<UID>
+Environment=XDG_RUNTIME_DIR=/run/user/1000
 Environment=PYTHONUNBUFFERED=1
 StandardOutput=journal
 StandardError=journal
