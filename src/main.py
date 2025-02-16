@@ -25,7 +25,7 @@ button3 = Button(25)
 pygame.init()
 
 # FPS (PyGame)
-FPS = 60
+FPS = 30
 
 # DISPLAY SET-UP
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080
@@ -442,19 +442,19 @@ while running:
         frame = (frame + 1) % len(images)
 
         # Check for button presses
-        if button1.is_pressed:
+        if !button1.is_pressed:
             count_votes(1)
             pressed = 1
             circle_radius = 0
             change_state("response_animation")
             
-        if button2.is_pressed:
+        if !button2.is_pressed:
             count_votes(2)
             pressed = 2
             circle_radius = 0
             change_state("response_animation")
             
-        if button3.is_pressed:
+        if !button3.is_pressed:
             count_votes(3)
             pressed = 3
             circle_radius = 0
