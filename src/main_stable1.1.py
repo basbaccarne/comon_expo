@@ -8,7 +8,6 @@ active_campaign = "votes_test.json"
 # LIBRARIES
 import pygame
 import pygvideo
-from pyvidplayer import Video
 import json
 import random
 import time
@@ -368,10 +367,12 @@ geen_mening = pygame.image.load(GEENMENING).convert_alpha()
 geen_mening = pygame.transform.rotate(geen_mening, 90)
 
 # SCENE 1: load video
-video = Video(VIDEO)
+video = pygvideo.Video(VIDEO)
 video.set_size(VIDEO_SIZE)
-center_x = (SCREEN_WIDTH - VIDEO_SIZE[0]) // 2
-center_y = (SCREEN_HEIGHT - VIDEO_SIZE[1]) // 2
+video.preplay(-1)
+video_width, video_height = video.get_size()
+center_x = (SCREEN_WIDTH - video_width) // 2
+center_y = (SCREEN_HEIGHT - video_height) // 2
 video_rect = pygame.Rect((center_x,center_y), (500, 500))
 
 # SCENE 2: Load images
@@ -406,6 +407,7 @@ nietakkoord_2_selected = pygame.transform.rotate(nietakkoord_2_selected, 90)
 # Preload first screen
 screen.fill(BG_COLOR)
 main_question()
+video.draw_and_update(screen, (center_x,center_y))
 pygame.display.flip()
 
 # MAIN GAME LOOP #
@@ -428,7 +430,7 @@ while running:
     # STATE: QUESTION
     # (listen to the buttons when the systel is in the question state)
     if state == "question":
-        video.draw(screen, (enter_x, enter_y))
+        video.draw_and_update(screen, (center_x,center_y))
         pygame.display.update(video_rect)
 
         if button1.is_pressed:
