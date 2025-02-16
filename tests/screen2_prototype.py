@@ -36,6 +36,9 @@ YELLOW_BOTTOM = IMG_DIR / 'bottom_yellow.png'
 AKKOORD_2 = IMG_DIR / 'akkoord_2.png'
 NIETAKKOORD_2 = IMG_DIR / 'nietakkoord_2.png'
 GEENMENING_2 = IMG_DIR / 'geenmening_2.png'
+AKKOORD_2_SELECTED = IMG_DIR / 'akkoord_2_selected.png'
+NIETAKKOORD_2_SELECTED = IMG_DIR / 'nietakkoord_2_selected.png'
+GEENMENING_2_SELECTED = IMG_DIR / 'geenmening_2_selected.png'
 
 # DESIGN
 WHITE = (255, 255, 255)
@@ -56,6 +59,7 @@ bar_width = SCREEN_WIDTH
 bar_area = pygame.Rect(SCREEN_WIDTH - bar_height, 0,  bar_height, bar_width)
 bin_width = 0
 start_time = 0
+pressed = 1
 
 # FUNCTIONAL FUNCTIONS
 def load_votes():
@@ -96,11 +100,11 @@ def response_screen():
     # background
     screen.fill(BG_COLOR)
 
-    # text scene 2 (dit is wat andere gentenaars denken)
+    # text scene 2 (zo denk jij versus de andere stemmers)
     text_position1 = (150, SCREEN_HEIGHT // 2)
     text_position2 = (250, SCREEN_HEIGHT // 2)
-    line1 = FONT.render("Dit is wat andere", True, DARKBLUE)
-    line2 = FONT.render("Gentenaars denken", True, DARKBLUE)
+    line1 = FONT.render("Zo denk jij versus", True, DARKBLUE)
+    line2 = FONT.render("de andere stemmers", True, DARKBLUE)
     rotated_line1 = pygame.transform.rotate(line1, 90)
     rotated_line2 = pygame.transform.rotate(line2, 90)
     line1_rect = rotated_line1.get_rect(center=text_position1)
@@ -181,6 +185,12 @@ def response_screen():
     screen.blit(akkoord_2, label_akkoord_position)
     screen.blit(geenmening_2, label_geenmening_position)
     screen.blit(nietakkoord_2, label_nietakkoord_position)
+    if pressed == 1:
+        screen.blit(akkoord_2_selected, label_akkoord_position)
+    elif pressed == 2:
+        screen.blit(geenmening_2_selected, label_geenmening_position)
+    elif pressed == 3:
+        screen.blit(nietakkoord_2_selected, label_nietakkoord_position)
 
     # load progress bar
     init_Progress_bar(20)
@@ -214,10 +224,16 @@ yellow_bottom = pygame.transform.rotate(yellow_bottom, 90)
 
 akkoord_2 = pygame.image.load(AKKOORD_2).convert_alpha()
 akkoord_2 = pygame.transform.rotate(akkoord_2, 90)
+akkoord_2_selected = pygame.image.load(AKKOORD_2_SELECTED).convert_alpha()
+akkoord_2_selected = pygame.transform.rotate(akkoord_2_selected, 90)
 geenmening_2 = pygame.image.load(GEENMENING_2).convert_alpha()
 geenmening_2 = pygame.transform.rotate(geenmening_2, 90)
+geenmening_2_selected = pygame.image.load(GEENMENING_2_SELECTED).convert_alpha()
+geenmening_2_selected = pygame.transform.rotate(geenmening_2_selected, 90)
 nietakkoord_2 = pygame.image.load(NIETAKKOORD_2).convert_alpha()
 nietakkoord_2 = pygame.transform.rotate(nietakkoord_2, 90)
+nietakkoord_2_selected = pygame.image.load(NIETAKKOORD_2_SELECTED).convert_alpha()
+nietakkoord_2_selected = pygame.transform.rotate(nietakkoord_2_selected, 90)
 
 # Preload first screen
 response_screen()
