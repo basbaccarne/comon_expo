@@ -404,6 +404,7 @@ nietakkoord_2_selected = pygame.transform.rotate(nietakkoord_2_selected, 90)
 # Preload first screen
 screen.fill(BG_COLOR)
 main_question()
+video.draw_and_update(screen, (center_x, center_y))
 pygame.display.flip()
 
 # MAIN GAME LOOP #
@@ -426,10 +427,8 @@ while running:
     # STATE: QUESTION
     # (listen to the buttons when the systel is in the question state)
     if state == "question":
-        screen.fill(BG_COLOR)
         video.draw_and_update(screen, (center_x, center_y))
-        main_question()
-        pygame.display.flip()
+        pygame.display.update()
 
         if button1.is_pressed:
             count_votes(1)
