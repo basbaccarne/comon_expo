@@ -78,7 +78,7 @@ RED = (255, 49, 49)
 GREEN = (0, 191, 98)
 YELLOW = (255, 222, 89)
 FONT = pygame.font.Font(FONT_PATH, 70)
-VIDEO_SIZE = (800, 800)
+VIDEO_SIZE = (500, 500)
 pygame.mouse.set_visible(False)
 
 # GLOBAL VARIABLES
@@ -373,7 +373,7 @@ video.preplay(-1)
 video_width, video_height = video.get_size()
 center_x = (SCREEN_WIDTH - video_width) // 2 - 200
 center_y = (SCREEN_HEIGHT - video_height) // 2
-video_rect = pygame.Rect((center_x,center_y), (800, 800))
+video_rect = pygame.Rect((center_x,center_y), (500, 500))
 
 # SCENE 2: Load images
 green_top = pygame.image.load(GREEN_TOP).convert_alpha()
