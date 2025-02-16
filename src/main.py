@@ -139,7 +139,7 @@ def save_votes(votes):
 
 def init_Progress_bar(time_duration):
     """Initialize the progress bar with the given duration."""
-    global bin_width, start_time, duration
+    global bin_width, start_time, duration, start_ticks
 
     # Draw the initial progress bar
     pygame.draw.rect(screen, DARKBLUE, bar_area)
@@ -148,6 +148,7 @@ def init_Progress_bar(time_duration):
     duration = time_duration
     bin_width = bar_width / time_duration
     start_time = time.time()
+    start_ticks = pygame.time.get_ticks()
 
 def update_progress_bar():
     """Update the progress bar based on elapsed time."""
@@ -155,7 +156,6 @@ def update_progress_bar():
     
     elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
     progress_width = int((elapsed_time / duration) * bar_width)
-    # elapsed_time = pygame.time.get_ticks()  - start_time
 
     if progress_width <= bar_width:
         retract_distance = bin_width * elapsed_time
@@ -470,15 +470,16 @@ while running:
         if pygame.time.get_ticks() / 1000 - timer > 2:
             change_state("response")
             response_screen()
-            init_Progress_bar(4)
             pygame.display.flip()
 
 
     # STATE: RESPONSE SCREEN
     if state == "response":
         update_progress_bar()
+        pygame.display.update()
+
         # wait 4 seconds, then change state
-        if pygame.time.get_ticks() / 1000 - timer > 4:
+        if pygame.time.get_ticks() / 1000 - timer > 6:
             change_state("question")
             screen.fill(BG_COLOR)
             main_question()
