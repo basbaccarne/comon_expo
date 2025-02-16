@@ -412,7 +412,8 @@ nietakkoord_2_selected = pygame.transform.rotate(nietakkoord_2_selected, 90)
 # Preload first screen
 screen.fill(BG_COLOR)
 main_question()
-video.draw_and_update(screen, (center_x, center_y))
+video.update()
+update_screen()
 pygame.display.flip()
 
 # MAIN GAME LOOP #
