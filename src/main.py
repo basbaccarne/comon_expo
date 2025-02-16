@@ -237,6 +237,9 @@ def response_animation(button, circle_radius):
         screen.blit(rotated_line1, line1_rect)
         screen.blit(rotated_line2, line2_rect)
 
+    # render
+    pygame.display.update()
+
 # STATE: RESPONSE
 def response_screen():
     """Display the response screen (static)"""
@@ -374,7 +377,7 @@ video = pygvideo.Video(VIDEO)
 video.set_size(VIDEO_SIZE)
 video.preplay(-1)
 video_width, video_height = video.get_size()
-center_x = (SCREEN_WIDTH - video_width) // 2
+center_x = (SCREEN_WIDTH - video_width) // 2 - 200
 center_y = (SCREEN_HEIGHT - video_height) // 2
 
 # SCENE 2: Load images
