@@ -53,7 +53,7 @@ RED_IMG = IMG_DIR / 'rood_lijn_1.png'
 NIETAKKOORD = IMG_DIR / 'nietakkoord_1.png'
 YELLOW_IMG = IMG_DIR / 'geel_lijn_1.png'
 GEENMENING = IMG_DIR / 'geenmening_1.png'
-VIDEO = IMG_DIR / 'animation.mkv'
+VIDEO = IMG_DIR / 'animation.mpeg'
 
 """scene 2"""
 GREEN_TOP = IMG_DIR / 'top_green.png'
