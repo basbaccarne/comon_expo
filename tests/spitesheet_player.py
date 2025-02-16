@@ -8,7 +8,7 @@ pygame.init()
 FPS = 25  # Adjust speed of animation
 IMAGE_FOLDER = "tests/img"  # Folder containing PNGs
 SCREEN_SIZE = (800, 800)  # Window size
-RESCALE = (400,400)
+RESCALE_VIDEO = (400,400)
 
 # Load images
 images = []
