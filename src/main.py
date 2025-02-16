@@ -371,7 +371,7 @@ video = pygvideo.Video(VIDEO)
 video.set_size(VIDEO_SIZE)
 video.preplay(-1)
 video_width, video_height = video.get_size()
-center_x = (SCREEN_WIDTH - video_width) // 2 - 200
+center_x = (SCREEN_WIDTH - video_width) // 2
 center_y = (SCREEN_HEIGHT - video_height) // 2
 video_rect = pygame.Rect((center_x,center_y), (500, 500))
 
