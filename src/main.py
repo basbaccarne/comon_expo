@@ -95,7 +95,6 @@ bar_width = SCREEN_WIDTH
 bar_area = pygame.Rect(SCREEN_WIDTH - bar_height, 0,  bar_height, bar_width)
 bin_width = 0
 start_time = 0
-pressed = 1
 
 # FUNCTIONAL FUNCTIONS
 def load_votes():
@@ -328,9 +327,9 @@ def response_screen():
     screen.blit(nietakkoord_2, label_nietakkoord_position)
     if pressed == 1:
         screen.blit(akkoord_2_selected, label_akkoord_position)
-    elif pressed == 2:
+    if pressed == 2:
         screen.blit(geenmening_2_selected, label_geenmening_position)
-    elif pressed == 3:
+    if pressed == 3:
         screen.blit(nietakkoord_2_selected, label_nietakkoord_position)
 
     # load progress bar (20 seconds)
