@@ -7,8 +7,6 @@ active_campaign = "votes_test.json"
 
 # LIBRARIES
 import pygame
-import pygvideo
-from pyvidplayer import Video
 import json
 import random
 import time
@@ -54,7 +52,6 @@ RED_IMG = IMG_DIR / 'rood_lijn_1.png'
 NIETAKKOORD = IMG_DIR / 'nietakkoord_1.png'
 YELLOW_IMG = IMG_DIR / 'geel_lijn_1.png'
 GEENMENING = IMG_DIR / 'geenmening_1.png'
-VIDEO = IMG_DIR / 'animation.mp4'
 
 """scene 2"""
 GREEN_TOP = IMG_DIR / 'top_green.png'
@@ -79,7 +76,7 @@ RED = (255, 49, 49)
 GREEN = (0, 191, 98)
 YELLOW = (255, 222, 89)
 FONT = pygame.font.Font(FONT_PATH, 70)
-VIDEO_SIZE = (500, 500)
+RESCALE_VIDEO = (500,500)
 pygame.mouse.set_visible(False)
 
 # GLOBAL VARIABLES
@@ -368,11 +365,17 @@ geen_mening = pygame.image.load(GEENMENING).convert_alpha()
 geen_mening = pygame.transform.rotate(geen_mening, 90)
 
 # SCENE 1: load video
-video = Video(VIDEO)
-video.set_size(VIDEO_SIZE)
-center_x = (SCREEN_WIDTH - VIDEO_SIZE[0]) // 2
-center_y = (SCREEN_HEIGHT - VIDEO_SIZE[1]) // 2
-video_rect = pygame.Rect((center_x,center_y), (500, 500))
+images = []
+for file in sorted(os.listdir(IMAGE_FOLDER)):
+    if file.endswith(".png"):
+        img = pygame.image.load(os.path.join(IMAGE_FOLDER, file))
+        images.append(img)
+
+if not images:
+    raise ValueError("No PNG images found in the specified folder.")
+
+images = [pygame.transform.scale(img, RESCALE_VIDEO) for img in images]
+center = ((SCREEN_SIZE[0] // 2) - (RESCALE_VIDEO[0]//2), (RESCALE_VIDEO[1] // 2) - (RESCALE[1]//2))
 
 # SCENE 2: Load images
 green_top = pygame.image.load(GREEN_TOP).convert_alpha()
@@ -414,6 +417,7 @@ pygame.display.flip()
 clock = pygame.time.Clock()
 start_ticks = pygame.time.get_ticks()
 running = True
+frame = 0
 
 while running:
 
@@ -428,9 +432,15 @@ while running:
     # STATE: QUESTION
     # (listen to the buttons when the systel is in the question state)
     if state == "question":
-        video.draw(screen, (enter_x, enter_y))
-        pygame.display.update(video_rect)
 
+        # Display current video frame
+        screen.blit(images[frame], center)
+        pygame.display.update()
+    
+        # Update frame
+        frame = (frame + 1) % len(images)
+
+        # Check for button presses
         if button1.is_pressed:
             count_votes(1)
             pressed = 1
@@ -476,5 +486,4 @@ while running:
     # Limit the frame rate
     clock.tick(FPS)
 
-pygvideo.quit_all()
 pygame.quit()
