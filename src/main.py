@@ -165,12 +165,6 @@ def update_progress_bar():
 
         pygame.display.update(progress_rect)
 
-def update_screen():
-    dirty_rects = video.get_dirty_rects()
-    for rect in dirty_rects:
-        screen.blit(video.get_frame(), rect, rect)
-    pygame.display.update(dirty_rects)
-
 # STATE FUNCTIONS #
 ###################
 
@@ -436,7 +430,7 @@ while running:
     # STATE: QUESTION
     # (listen to the buttons when the systel is in the question state)
     if state == "question":
-        video.draw_and_update(screen, video_position)
+        video.draw_and_update(screen, (center_x,center_y))
         pygame.display.update(video_rect)
 
         if button1.is_pressed:
