@@ -467,7 +467,7 @@ while running:
         response_animation(pressed, circle_radius)
 
         # wait 2 seconds, then change state
-        if pygame.time.get_ticks() / 1000 - timer > 4:
+        if pygame.time.get_ticks() / 1000 - timer > 6:
             change_state("response")
             response_screen()
             pygame.display.flip()
@@ -476,10 +476,9 @@ while running:
     # STATE: RESPONSE SCREEN
     if state == "response":
         update_progress_bar()
-        pygame.display.update()
 
         # wait 4 seconds, then change state
-        if pygame.time.get_ticks() / 1000 - timer > 8:
+        if pygame.time.get_ticks() / 1000 - timer > 9:
             change_state("question")
             screen.fill(BG_COLOR)
             main_question()
