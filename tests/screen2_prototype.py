@@ -198,6 +198,8 @@ def response_screen():
     # render
     pygame.display.flip()
 
+def response_animation()
+    True
 
 # PRELOADING #
 ##############
@@ -251,6 +253,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             running = False
+        
 
     # STATE MACHINE #
     #################

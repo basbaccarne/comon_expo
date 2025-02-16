@@ -7,17 +7,15 @@ active_campaign = "votes_test.json"
 
 # LIBRARIES
 import pygame
+import pygvideo
 import json
 import random
 import time
 from time import sleep
-import math
-import pygame.gfxdraw
 from gpiozero import Button
 from pathlib import Path
 
 import os
-os.environ['PULSE_SERVER'] = ''
 
 # GPIO button setup
 # (buttons are connected to ground and pins 4, 14 and 25)
@@ -32,16 +30,12 @@ pygame.init()
 FPS = 60
 
 # DISPLAY SET-UP
-# screen_info = pygame.display.Info()
-# SCREEN_WIDTH = screen_info.current_w
-# SCREEN_HEIGHT = screen_info.current_h
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080
 pygame.display.set_caption("Comon Expo Interface")
 screen = pygame.display.set_mode(
     (SCREEN_WIDTH, SCREEN_HEIGHT),
     pygame.FULLSCREEN | pygame.DOUBLEBUF,
     vsync=1)
-
 
 # PATHS
 SCRIPT_DIR = Path(__file__).parent
