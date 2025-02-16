@@ -479,7 +479,7 @@ while running:
         pygame.display.update()
 
         # wait 4 seconds, then change state
-        if pygame.time.get_ticks() / 1000 - timer > 6:
+        if pygame.time.get_ticks() / 1000 - timer > 10:
             change_state("question")
             screen.fill(BG_COLOR)
             main_question()
