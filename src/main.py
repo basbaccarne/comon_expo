@@ -44,6 +44,7 @@ VOTE_FILE = DATA_DIR / active_campaign
 FONT_PATH = DATA_DIR / 'TT Firs Neue Regular.ttf'
 
 IMG_DIR = SCRIPT_DIR.parent / 'img'
+IMAGE_FOLDER = IMG_DIR / 'animation'
 
 """scene 1"""
 GREEN_IMG = IMG_DIR / 'groen_lijn_1.png'
