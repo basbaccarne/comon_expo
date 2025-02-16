@@ -24,7 +24,8 @@ These buttons are embedded in robot hands. The robot asks the visitors a questio
 **Code**   
 The raspi runs a PyGame on boot ([splash](img/splash.png)). It listens to the buttons and stores the votes in a json file. The script is managed in 3 scenes: (1) listening to input (question state), (2) an animation after button press (response animation state) and (3) the response screen that shows the percentages of votes (response state). Scene 1 > 2 is triggered by a button press, Scene 2 > 3 through a timer and Scene 3 > 1 through a second timer. Changing and resetting campaigns in manages by defining a new json file name.   
 
-⌨️ [Main Robot Code](src/main.py)
+⌨️ [Main Robot Code](src/main.py)   
+🖥️ [Robot Screens](https://www.figma.com/design/EfeVKvnCxgSWbqRXbqvGUf/Comon-XPO-Bot?node-id=0-1&t=MXC9QsESPhPwYNCb-1)
   
 ## Background: storing data
 We can send data back and forth using public MQTT brokers, but we want to introducce two new challenges: 
@@ -159,9 +160,15 @@ If you update the python code:
 sudo systemctl restart comon_expo.service
 ```
 To monitor the logs
+> Live
 ```console
 journalctl -u comon_expo.service -f
 ```
+> Last x minutes
+```console
+sudo journalctl -u comon_expo.service --since "5 minutes ago"
+```
+ 
 ## Background: custom splash
 
 **step 2. Hide boot messages for a cleaner look**   
