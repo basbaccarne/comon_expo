@@ -461,18 +461,20 @@ while running:
         if pygame.time.get_ticks() / 1000 - timer > 2:
             change_state("response")
             response_screen()
-            init_Progress_bar(20)
+            init_Progress_bar(4)
+            pygame.display.flip()
+
 
     # STATE: RESPONSE SCREEN
     if state == "response":
         update_progress_bar()
-        # wait 2 seconds, then change state
+        # wait 4 seconds, then change state
         if pygame.time.get_ticks() / 1000 - timer > 4:
             change_state("question")
             screen.fill(BG_COLOR)
             main_question()
+            pygame.display.flip()
             
-
     # Limit the frame rate
     clock.tick(FPS)
 
