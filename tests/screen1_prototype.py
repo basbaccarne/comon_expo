@@ -4,15 +4,13 @@
 import pygame
 import pygvideo
 from pathlib import Path
-
 import os
-os.environ['PULSE_SERVER'] = ''
 
 # Initialize Pygame
 pygame.init()
 
 # FPS (PyGame)
-FPS = 20
+FPS = 30
 
 # display set-up
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080
@@ -49,6 +47,10 @@ LINE_COLOR = (200, 100, 50)
 FONT = pygame.font.Font(FONT_PATH, 70)
 VIDEO_SIZE = (800, 800)
 pygame.mouse.set_visible(False)
+
+# GLOBAL VARIABLES
+state = "question"
+circle_radius = 0
 
 # STATE: QUESTION
 def main_question():
@@ -87,8 +89,38 @@ def main_question():
     screen.blit(niet_akkoord, position_niet_akkooord)
     screen.blit(geen_mening, position_geen_mening)
 
+# STATE: RESPONSE ANIMATION
+def response_animation(button, circle_radius):
+    """Animate the response screen"""
+    
+    color = DARKBLUE
+    position = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
+
+    # draw circle
+    pygame.draw.circle(screen, color, position, circle_radius)
+
+    # text (keuze)
+    if button == 1:
+        choice = '[ AKKOORD ]'
+    elif button == 2:
+        choice = '[ NIET AKKOORD ]'
+    elif button == 3:
+        choice = '[ GEEN MENING ]'
+
+    if circle_radius > 400:
+        text_position1 = (SCREEN_WIDTH//2-50, SCREEN_HEIGHT // 2)
+        text_position2 = (SCREEN_WIDTH//2+50, SCREEN_HEIGHT // 2)
+        line1 = FONT.render("Jouw standpunt", True, WHITE)
+        line2 = FONT.render(choice, True, WHITE)
+        rotated_line1 = pygame.transform.rotate(line1, 90)
+        rotated_line2 = pygame.transform.rotate(line2, 90)
+        line1_rect = rotated_line1.get_rect(center=text_position1)
+        line2_rect = rotated_line2.get_rect(center=text_position2)
+        screen.blit(rotated_line1, line1_rect)
+        screen.blit(rotated_line2, line2_rect)
+
     # render
-    # pygame.display.flip()
+    pygame.display.update()
 
 # PRELOADING #
 ##############
@@ -137,7 +169,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             running = False
-        video.handle_event(event)
+        # respond on space bar
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            state = "response_animation"
 
     # STATE MACHINE #
     #################
@@ -148,11 +182,17 @@ while running:
 
     # STATE: RESPONSE SCREEN
     
+    if state == "question":
+        screen.fill(BG_COLOR)
+        video.draw_and_update(screen, (center_x, center_y))
+        main_question()
+        pygame.display.flip()
     
-    screen.fill(BG_COLOR)
-    video.draw_and_update(screen, (center_x, center_y))
-    main_question()
-    pygame.display.flip()
+    if state == "response_animation":
+        growth_speed = 50
+        circle_radius += growth_speed
+        response_animation(1, circle_radius)
+
 
     # Limit the frame rate
     clock.tick(FPS)
