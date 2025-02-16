@@ -125,7 +125,7 @@ def response_animation(button, circle_radius):
 # PRELOADING #
 ##############
 
-# Load images (line peaces) // rotate (rescale if needed)
+# Load images (line peaces) & rotate 90 degrees
 line_green = pygame.image.load(GREEN_IMG).convert_alpha()
 line_green = pygame.transform.rotate(line_green, 90)
 
