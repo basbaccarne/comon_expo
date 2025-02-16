@@ -376,7 +376,7 @@ if not images:
     raise ValueError("No PNG images found in the specified folder.")
 
 images = [pygame.transform.scale(img, RESCALE_VIDEO) for img in images]
-center = ((SCREEN_SIZE[0] // 2) - (RESCALE_VIDEO[0]//2), (RESCALE_VIDEO[1] // 2) - (RESCALE[1]//2))
+center = ((SCREEN_WIDTH // 2) - (RESCALE_VIDEO[0]//2), (SCREEN_HEIGHT // 2) - (RESCALE_VIDEO[1]//2))
 
 # SCENE 2: Load images
 green_top = pygame.image.load(GREEN_TOP).convert_alpha()
