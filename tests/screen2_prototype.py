@@ -3,14 +3,14 @@
 # modules
 import pygame
 from pathlib import Path
-
+import time
 import os
 
 # Initialize Pygame
 pygame.init()
 
 # FPS (PyGame)
-FPS = 20
+FPS = 30
 
 # display set-up
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080
@@ -27,18 +27,15 @@ DATA_DIR = SCRIPT_DIR.parent / 'data'
 FONT_PATH = DATA_DIR / 'TT Firs Neue Regular.ttf'
 
 IMG_DIR = SCRIPT_DIR.parent / 'img'
-
 GREEN_TOP = IMG_DIR / 'top_green.png'
 GREEN_BOTTOM = IMG_DIR / 'bottom_green.png'
 RED_TOP = IMG_DIR / 'top_red.png'
 RED_BOTTOM = IMG_DIR / 'bottom_red.png'
 YELLOW_TOP = IMG_DIR / 'top_yellow.png'
 YELLOW_BOTTOM = IMG_DIR / 'bottom_yellow.png'
-
 AKKOORD_2 = IMG_DIR / 'akkoord_2.png'
 NIETAKKOORD_2 = IMG_DIR / 'nietakkoord_2.png'
 GEENMENING_2 = IMG_DIR / 'geenmening_2.png'
-
 
 # DESIGN
 WHITE = (255, 255, 255)
@@ -52,11 +49,46 @@ LINE_COLOR = (200, 100, 50)
 FONT = pygame.font.Font(FONT_PATH, 70)
 pygame.mouse.set_visible(False)
 
+# GLOBAL VARIABLES
+"""timer"""
+bar_height = 40
+bar_width = SCREEN_WIDTH
+bar_area = pygame.Rect(SCREEN_WIDTH - bar_height, 0,  bar_height, bar_width)
+bin_width = 0
+start_time = 0
+
 # FUNCTIONAL FUNCTIONS
 def load_votes():
     """Load previous votes if available"""
     return {"button1": 20, "button2": 30, "button3": 50}
 
+def init_Progress_bar(time_duration):
+    """Initialize the progress bar with the given duration."""
+    global bin_width, start_time, duration
+
+    # Draw the initial progress bar
+    pygame.draw.rect(screen, DARKBLUE, bar_area)
+    
+    # Calculate bin width
+    duration = time_duration
+    bin_width = bar_width / time_duration
+    start_time = time.time()
+
+def update_progress_bar():
+    """Update the progress bar based on elapsed time."""
+    global last_update_time
+    
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
+    progress_width = int((elapsed_time / duration) * bar_width)
+    # elapsed_time = pygame.time.get_ticks()  - start_time
+
+    if progress_width <= bar_width:
+        retract_distance = bin_width * elapsed_time
+        progress_rect = pygame.Rect(SCREEN_WIDTH-bar_height, 0, bar_height, retract_distance)    
+        pygame.draw.rect(screen, BG_COLOR, progress_rect)
+
+        pygame.display.update(progress_rect)
+    
 def response_screen():
     """Display the response screen (static)"""
     global votes, pressed
@@ -150,6 +182,9 @@ def response_screen():
     screen.blit(geenmening_2, label_geenmening_position)
     screen.blit(nietakkoord_2, label_nietakkoord_position)
 
+    # load progress bar
+    init_Progress_bar(20)
+
     # render
     pygame.display.flip()
 
@@ -161,15 +196,17 @@ def response_screen():
 votes = load_votes()
 print("Current votes:", votes)
 
-# Load images (line peaces) // rotate (rescale if needed)
+# Preload images
 green_top = pygame.image.load(GREEN_TOP).convert_alpha()
 green_top = pygame.transform.rotate(green_top, 90)
 green_bottom = pygame.image.load(GREEN_BOTTOM).convert_alpha()
 green_bottom = pygame.transform.rotate(green_bottom, 90)
+
 red_top = pygame.image.load(RED_TOP).convert_alpha()
 red_top = pygame.transform.rotate(red_top, 90)
 red_bottom = pygame.image.load(RED_BOTTOM).convert_alpha()
 red_bottom = pygame.transform.rotate(red_bottom, 90)
+
 yellow_top = pygame.image.load(YELLOW_TOP).convert_alpha()
 yellow_top = pygame.transform.rotate(yellow_top, 90)
 yellow_bottom = pygame.image.load(YELLOW_BOTTOM).convert_alpha()
@@ -182,7 +219,6 @@ geenmening_2 = pygame.transform.rotate(geenmening_2, 90)
 nietakkoord_2 = pygame.image.load(NIETAKKOORD_2).convert_alpha()
 nietakkoord_2 = pygame.transform.rotate(nietakkoord_2, 90)
 
-
 # Preload first screen
 response_screen()
 
@@ -190,6 +226,7 @@ response_screen()
 ##################
 
 clock = pygame.time.Clock()
+start_ticks = pygame.time.get_ticks()
 running = True
 
 while running:
@@ -205,10 +242,10 @@ while running:
     # STATE: QUESTION
 
     # STATE: RESPONSE_ANIMATION
-
-    # STATE: RESPONSE SCREEN
     
-    response_screen()
+    # STATE: RESPONSE SCREEN
+    # Update the progress bar
+    update_progress_bar()
 
     # Limit the frame rate
     clock.tick(FPS)
