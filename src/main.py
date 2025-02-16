@@ -14,7 +14,6 @@ import time
 from time import sleep
 from gpiozero import Button
 from pathlib import Path
-
 import os
 
 # GPIO button setup
@@ -42,13 +41,17 @@ SCRIPT_DIR = Path(__file__).parent
 
 DATA_DIR = SCRIPT_DIR.parent / 'data'
 VOTE_FILE = DATA_DIR / active_campaign
+
 FONT_PATH = DATA_DIR / 'TT Firs Neue Regular.ttf'
-VOTE_FILE = DATA_DIR / active_campaign
 
 IMG_DIR = SCRIPT_DIR.parent / 'img'
-GREEN_IMG = IMG_DIR / 'line_green.png'
-RED_IMG = IMG_DIR / 'line_red.png'
-YELLOW_IMG = IMG_DIR / 'line_yellow.png'
+GREEN_IMG = IMG_DIR / 'groen_lijn_1.png'
+AKKOORD = IMG_DIR / 'akkoord_1.png'
+RED_IMG = IMG_DIR / 'rood_lijn_1.png'
+NIETAKKOORD = IMG_DIR / 'nietakkoord_1.png'
+YELLOW_IMG = IMG_DIR / 'geel_lijn_1.png'
+GEENMENING = IMG_DIR / 'geenmening_1.png'
+VIDEO = IMG_DIR / 'animation.mkv'
 
 # DESIGN
 WHITE = (255, 255, 255)
@@ -60,6 +63,7 @@ GREEN = (0, 191, 98)
 YELLOW = (255, 222, 89)
 LINE_COLOR = (200, 100, 50)
 FONT = pygame.font.Font(FONT_PATH, 100)
+VIDEO_SIZE = (800, 800)
 pygame.mouse.set_visible(False)
 
 # GLOBAL VARIABLES
@@ -79,6 +83,7 @@ def load_votes():
 
 
 def count_votes(button):
+    """Count votes and save to file"""
     global votes, pressed
 
     # count votes
@@ -114,52 +119,66 @@ def save_votes(votes):
 
 # STATE: QUESTION
 def main_question():
-    """Display the main question screen (static)"""
+    """Display the main question screen"""
 
-    # background
-    screen.fill(BG_COLOR)
-
-    # text
-    line1 = FONT.render("?", True, DARKBLUE)
-    line2 = FONT.render(" ", True, DARKBLUE)
+    # text scene 1 (instructies)
+    text_position1 = (400, SCREEN_HEIGHT // 2)
+    text_position2 = (500, SCREEN_HEIGHT // 2)
+    line1 = FONT.render("Geef je mening door QBot", True, DARKBLUE)
+    line2 = FONT.render("een high five te geven", True, DARKBLUE)
     rotated_line1 = pygame.transform.rotate(line1, 90)
     rotated_line2 = pygame.transform.rotate(line2, 90)
-    line1_rect = rotated_line1.get_rect(center=(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2))
-    line2_rect = rotated_line2.get_rect(center=(SCREEN_WIDTH // 2 + 50, SCREEN_HEIGHT // 2))
+    line1_rect = rotated_line1.get_rect(center=text_position1)
+    line2_rect = rotated_line2.get_rect(center=text_position2)
     screen.blit(rotated_line1, line1_rect)
     screen.blit(rotated_line2, line2_rect)
 
-    # end of the lines (x, y, reverse)
-    screen.blit(line_green, (100, 0))
-    screen.blit(line_red, (1500, 100))
-    screen.blit(line_yellow, (1000, 600))
+    # end of the lines pngs
+    position_green_line = (40, 0)
+    position_red_line = (1700, 280)
+    position_yellow_line = (1380, 800)
+    screen.blit(line_green, position_green_line)
+    screen.blit(line_red, position_red_line)
+    screen.blit(line_yellow, position_yellow_line)
 
-    # render
-    pygame.display.flip()
+    # vote choice pngs
+    position_akkooord = (40, 85)
+    position_niet_akkooord = (1700, 350)
+    position_geen_mening = (1350, 500)
+    screen.blit(akkoord, position_akkooord)
+    screen.blit(niet_akkoord, position_niet_akkooord)
+    screen.blit(geen_mening, position_geen_mening)
 
 # STATE: RESPONSE ANIMATION
 def response_animation(button, circle_radius):
     """Animate the response screen"""
-    
-    color = (0,0,0)
-    position = (0,0)
 
-# set starting position and color
-    if button == 1:
-        position = (100, 0)
-        color = GREEN
-    if button == 2:
-        position = (1500, 100)
-        color = RED
-    if button == 3:
-        position = (1000, 600)
-        color = YELLOW
+    color = DARKBLUE
+    position = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
-    # draw circle
+    # draw circle (this one will grow)
     pygame.draw.circle(screen, color, position, circle_radius)
 
-    # render
-    pygame.display.update()
+    # text (selected choice)
+    if button == 1:
+        choice = '[ AKKOORD ]'
+    elif button == 2:
+        choice = '[ NIET AKKOORD ]'
+    elif button == 3:
+        choice = '[ GEEN MENING ]'
+
+    # draw text once the circle is big enough
+    if circle_radius > 400:
+        text_position1 = (SCREEN_WIDTH//2-50, SCREEN_HEIGHT // 2)
+        text_position2 = (SCREEN_WIDTH//2+50, SCREEN_HEIGHT // 2)
+        line1 = FONT.render("Jouw standpunt", True, WHITE)
+        line2 = FONT.render(choice, True, WHITE)
+        rotated_line1 = pygame.transform.rotate(line1, 90)
+        rotated_line2 = pygame.transform.rotate(line2, 90)
+        line1_rect = rotated_line1.get_rect(center=text_position1)
+        line2_rect = rotated_line2.get_rect(center=text_position2)
+        screen.blit(rotated_line1, line1_rect)
+        screen.blit(rotated_line2, line2_rect)
 
 # STATE: RESPONSE
 def response_screen():
@@ -240,16 +259,37 @@ def response_screen():
 votes = load_votes()
 print("Current votes:", votes)
 
-# Load images (line peaces) // rotate (rescale if needed)
+# SCENE 1: Load images (line peaces) & rotate 90 degrees
 line_green = pygame.image.load(GREEN_IMG).convert_alpha()
 line_green = pygame.transform.rotate(line_green, 90)
+
 line_red = pygame.image.load(RED_IMG).convert_alpha()
 line_red = pygame.transform.rotate(line_red, 90)
+
 line_yellow = pygame.image.load(YELLOW_IMG).convert_alpha()
 line_yellow = pygame.transform.rotate(line_yellow, 90)
 
+akkoord = pygame.image.load(AKKOORD).convert_alpha()
+akkoord = pygame.transform.rotate(akkoord, 90)
+
+niet_akkoord = pygame.image.load(NIETAKKOORD).convert_alpha()
+niet_akkoord = pygame.transform.rotate(niet_akkoord, 90)
+
+geen_mening = pygame.image.load(GEENMENING).convert_alpha()
+geen_mening = pygame.transform.rotate(geen_mening, 90)
+
+# SCENE 1: load video
+video = pygvideo.Video(VIDEO)
+video.set_size(VIDEO_SIZE)
+video.preplay(-1)
+video_width, video_height = video.get_size()
+center_x = (SCREEN_WIDTH - video_width) // 2
+center_y = (SCREEN_HEIGHT - video_height) // 2
+
 # Preload first screen
+screen.fill(BG_COLOR)
 main_question()
+pygame.display.flip()
 
 # MAIN GAME LOOP #
 ##################
@@ -270,6 +310,11 @@ while running:
     # STATE: QUESTION
     # (listen to the buttons when the systel is in the question state)
     if state == "question":
+        screen.fill(BG_COLOR)
+        video.draw_and_update(screen, (center_x, center_y))
+        main_question()
+        pygame.display.flip()
+
         if button1.is_pressed:
             count_votes(1)
             pressed = 1
@@ -310,4 +355,5 @@ while running:
     # Limit the frame rate
     clock.tick(FPS)
 
+pygvideo.quit_all()
 pygame.quit()
