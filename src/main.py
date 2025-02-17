@@ -242,10 +242,10 @@ def response_screen():
     screen.fill(BG_COLOR)
 
     # text scene 2 (zo denk jij versus de andere stemmers)
-    text_position1 = (150, SCREEN_HEIGHT // 2)
+    text_position1 = (200, SCREEN_HEIGHT // 2)
     text_position2 = (250, SCREEN_HEIGHT // 2)
-    line1 = FONT.render("Zo denk jij versus", True, DARKBLUE)
-    line2 = FONT.render("de andere stemmers", True, DARKBLUE)
+    line1 = FONT.render("Interessant!", True, DARKBLUE)
+    line2 = FONT.render("", True, DARKBLUE)
     rotated_line1 = pygame.transform.rotate(line1, 90)
     rotated_line2 = pygame.transform.rotate(line2, 90)
     line1_rect = rotated_line1.get_rect(center=text_position1)
