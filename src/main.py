@@ -327,11 +327,11 @@ def response_screen():
     screen.blit(geenmening_2, label_geenmening_position)
     screen.blit(nietakkoord_2, label_nietakkoord_position)
     if pressed == 1:
-        screen.blit(jouwmening, (rect_agree.center[0] + size_ovals[1]//2-25 ,150))
+        screen.blit(jouwmening, (rect_agree.center[0] + size_ovals[1]//2-50 ,120))
     if pressed == 3:
-        screen.blit(jouwmening, (rect_noopinion.center[0] + size_ovals[1]//2-25,150))
+        screen.blit(jouwmening, (rect_noopinion.center[0] + size_ovals[1]//2-50,120))
     if pressed == 2:
-        screen.blit(jouwmening, (rect_disagree.center[0] + size_ovals[1]//2-25,150))
+        screen.blit(jouwmening, (rect_disagree.center[0] + size_ovals[1]//2-50,120))
 
     # load progress bar (20 seconds)
     init_Progress_bar(20)
