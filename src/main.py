@@ -260,7 +260,7 @@ def response_screen():
     noopinion = votes["button3"]/total
 
     # fixed parameters for the bars
-    starting_point = (400,350) # left corner of the green top
+    starting_point = (400,300) # left corner of the green top
     bar_width = 449 # bar width
     size_ovals = (bar_width,121) # size of the ovals
     total_height = 1200 # total height of the stacked bars
