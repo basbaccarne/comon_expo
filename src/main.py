@@ -212,7 +212,7 @@ def response_animation(button, circle_radius):
     if button == 1:
         choice = '[ AKKOORD ]'
     elif button == 2:
-        choice = '[ NIET AKKOORD ]'
+        choice = '[ Ik TWIJFEL ]'
     elif button == 3:
         choice = '[ GEEN MENING ]'
 
