@@ -454,21 +454,25 @@ while running:
             pressed = 1
             circle_radius = 0
             change_state("response")
-            init_Progress_bar(20)
+            response_screen()
+            pygame.display.flip()
+            
             
         if button2.is_pressed:
             count_votes(2)
             pressed = 2
             circle_radius = 0
             change_state("response")
-            init_Progress_bar(20)
+            response_screen()
+            pygame.display.flip()
             
         if button3.is_pressed:
             count_votes(3)
             pressed = 3
             circle_radius = 0
             change_state("response")
-            init_Progress_bar(20)
+            response_screen()
+            pygame.display.flip()
 
     # STATE: RESPONSE_ANIMATION
     if state == "response_animation":
