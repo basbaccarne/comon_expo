@@ -183,7 +183,7 @@ def main_question():
     screen.blit(rotated_line2, line2_rect)
 
     # end of the lines pngs
-    position_green_line = (120, 0)
+    position_green_line = (100, 0)
     position_red_line = (1700, 280)
     position_yellow_line = (1380, 800)
     screen.blit(line_green, position_green_line)
@@ -357,12 +357,15 @@ line_yellow = pygame.transform.rotate(line_yellow, 90)
 
 akkoord = pygame.image.load(AKKOORD).convert_alpha()
 akkoord = pygame.transform.rotate(akkoord, 90)
+akkoord = pygame.transform.scale(akkoord, (502*1.2,425*1.2))
 
 niet_akkoord = pygame.image.load(NIETAKKOORD).convert_alpha()
 niet_akkoord = pygame.transform.rotate(niet_akkoord, 90)
+niet_akkoord = pygame.transform.scale(niet_akkoord, (502*1.2,425*1.2))
 
 geen_mening = pygame.image.load(GEENMENING).convert_alpha()
 geen_mening = pygame.transform.rotate(geen_mening, 90)
+geen_mening = pygame.transform.scale(geen_mening, (502*1.2,425*1.2))
 
 # SCENE 1: load video
 images = []
