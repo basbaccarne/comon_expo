@@ -327,11 +327,11 @@ def response_screen():
     screen.blit(geenmening_2, label_geenmening_position)
     screen.blit(nietakkoord_2, label_nietakkoord_position)
     if pressed == 1:
-        screen.blit(jouwmening, (label_akkoord_position[0],80))
+        screen.blit(jouwmening, (label_akkoord_position[0],65))
     if pressed == 3:
-        screen.blit(jouwmening, (label_geenmening_position[0],80))
+        screen.blit(jouwmening, (label_geenmening_position[0],65))
     if pressed == 2:
-        screen.blit(jouwmening, (label_nietakkoord_position[0],80))
+        screen.blit(jouwmening, (label_nietakkoord_position[0],65))
 
     # load progress bar (20 seconds)
     init_Progress_bar(20)
