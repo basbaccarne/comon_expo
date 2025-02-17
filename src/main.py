@@ -453,19 +453,22 @@ while running:
             count_votes(1)
             pressed = 1
             circle_radius = 0
-            change_state("response_animation")
+            change_state("response")
+            init_Progress_bar(20)
             
         if button2.is_pressed:
             count_votes(2)
             pressed = 2
             circle_radius = 0
-            change_state("response_animation")
+            change_state("response")
+            init_Progress_bar(20)
             
         if button3.is_pressed:
             count_votes(3)
             pressed = 3
             circle_radius = 0
             change_state("response")
+            init_Progress_bar(20)
 
     # STATE: RESPONSE_ANIMATION
     if state == "response_animation":
