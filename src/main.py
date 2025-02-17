@@ -183,7 +183,7 @@ def main_question():
     screen.blit(rotated_line2, line2_rect)
 
     # end of the lines pngs
-    position_green_line = (80, 0)
+    position_green_line = (120, 0)
     position_red_line = (1700, 280)
     position_yellow_line = (1380, 800)
     screen.blit(line_green, position_green_line)
