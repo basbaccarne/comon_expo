@@ -184,7 +184,7 @@ def main_question():
 
     # end of the lines pngs
     position_green_line = (100, 0)
-    position_red_line = (1700, 400)
+    position_red_line = (1800, 500)
     position_yellow_line = (1380, 800)
     screen.blit(line_green, position_green_line)
     screen.blit(line_red, position_red_line)
