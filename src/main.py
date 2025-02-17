@@ -213,9 +213,9 @@ def response_animation(button, circle_radius):
     if button == 1:
         choice = '[ AKKOORD ]'
     elif button == 2:
-        choice = '[ Ik TWIJFEL ]'
+        choice = '[ NIET AKKOORD ]'
     elif button == 3:
-        choice = '[ GEEN MENING ]'
+        choice = '[ IK TWIJFEL ]'
 
     # draw text once the circle is big enough
     if circle_radius > 400:
@@ -325,7 +325,7 @@ def response_screen():
     # add graphical elements (akkoord - geen mening - niet akkoord)
     screen.blit(akkoord_2, label_akkoord_position)
     screen.blit(geenmening_2, label_geenmening_position)
-    screen.blit(nietakkoord_2, jouwmening_position)
+    screen.blit(nietakkoord_2, label_nietakkoord_position)
     if pressed == 1:
         screen.blit(jouwmening, (rect_agree.center[0] + size_ovals[1]//2 + 100,228))
     if pressed == 3:
