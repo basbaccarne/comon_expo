@@ -357,15 +357,15 @@ line_yellow = pygame.transform.rotate(line_yellow, 90)
 
 akkoord = pygame.image.load(AKKOORD).convert_alpha()
 akkoord = pygame.transform.rotate(akkoord, 90)
-akkoord = pygame.transform.scale(akkoord, (446*1.2,142*1.2))
+akkoord = pygame.transform.scale(akkoord, (142*1.2,446*1.2))
 
 niet_akkoord = pygame.image.load(NIETAKKOORD).convert_alpha()
 niet_akkoord = pygame.transform.rotate(niet_akkoord, 90)
-niet_akkoord = pygame.transform.scale(niet_akkoord, (446*1.2,142*1.2))
+niet_akkoord = pygame.transform.scale(niet_akkoord, (142*1.2,446*1.2))
 
 geen_mening = pygame.image.load(GEENMENING).convert_alpha()
 geen_mening = pygame.transform.rotate(geen_mening, 90)
-geen_mening = pygame.transform.scale(geen_mening, (446*1.2,142*1.2))
+geen_mening = pygame.transform.scale(geen_mening, (142*1.2,446*1.2))
 
 # SCENE 1: load video
 images = []
