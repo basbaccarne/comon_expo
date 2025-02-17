@@ -184,7 +184,7 @@ def main_question():
 
     # end of the lines pngs
     position_green_line = (100, 0)
-    position_red_line = (1700, 400)
+    position_red_line = (1700, 450)
     position_yellow_line = (1380, 800)
     screen.blit(line_green, position_green_line)
     screen.blit(line_red, position_red_line)
@@ -192,7 +192,7 @@ def main_question():
 
     # vote choice pngs
     position_akkooord = (100, 85)
-    position_niet_akkooord = (1635, 200)
+    position_niet_akkooord = (1635, 250)
     position_geen_mening = (1350, 400)
     screen.blit(akkoord, position_akkooord)
     screen.blit(niet_akkoord, position_niet_akkooord)
