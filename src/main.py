@@ -221,7 +221,7 @@ def response_animation(button, circle_radius):
     if circle_radius > 400:
         text_position1 = (SCREEN_WIDTH//2-50, SCREEN_HEIGHT // 2)
         text_position2 = (SCREEN_WIDTH//2+50, SCREEN_HEIGHT // 2)
-        line1 = FONT.render("Jouw standpunt", True, WHITE)
+        line1 = FONT.render("Jouw mening:", True, WHITE)
         line2 = FONT.render(choice, True, WHITE)
         rotated_line1 = pygame.transform.rotate(line1, 90)
         rotated_line2 = pygame.transform.rotate(line2, 90)
@@ -465,7 +465,7 @@ while running:
             count_votes(3)
             pressed = 3
             circle_radius = 0
-            change_state("response_animation")
+            change_state("response")
 
     # STATE: RESPONSE_ANIMATION
     if state == "response_animation":
