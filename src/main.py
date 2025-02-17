@@ -67,6 +67,7 @@ GEENMENING_2 = IMG_DIR / 'geenmening_2.png'
 AKKOORD_2_SELECTED = IMG_DIR / 'akkoord_2_selected.png'
 NIETAKKOORD_2_SELECTED = IMG_DIR / 'nietakkoord_2_selected.png'
 GEENMENING_2_SELECTED = IMG_DIR / 'geenmening_2_selected.png'
+JOUWMENING = IMG_DIR / 'jouwmening.png'
 
 # DESIGN
 WHITE = (255, 255, 255)
@@ -324,13 +325,13 @@ def response_screen():
     # add graphical elements (akkoord - geen mening - niet akkoord)
     screen.blit(akkoord_2, label_akkoord_position)
     screen.blit(geenmening_2, label_geenmening_position)
-    screen.blit(nietakkoord_2, label_nietakkoord_position)
+    screen.blit(nietakkoord_2, jouwmening_position)
     if pressed == 1:
-        screen.blit(akkoord_2_selected, label_akkoord_position)
+        screen.blit(jouwmening, (center=(rect_agree.center[0] + size_ovals[1]//2 + 100,228))
     if pressed == 3:
-        screen.blit(geenmening_2_selected, label_geenmening_position)
+        screen.blit(jouwmening, (center=(rect_noopinion.center[0] + size_ovals[1]//2 + 100,228))
     if pressed == 2:
-        screen.blit(nietakkoord_2_selected, label_nietakkoord_position)
+        screen.blit(jouwmening, (center=(rect_disagree.center[0] + size_ovals[1]//2 + 100,228) )
 
     # load progress bar (20 seconds)
     init_Progress_bar(20)
@@ -410,6 +411,8 @@ nietakkoord_2 = pygame.image.load(NIETAKKOORD_2).convert_alpha()
 nietakkoord_2 = pygame.transform.rotate(nietakkoord_2, 90)
 nietakkoord_2_selected = pygame.image.load(NIETAKKOORD_2_SELECTED).convert_alpha()
 nietakkoord_2_selected = pygame.transform.rotate(nietakkoord_2_selected, 90)
+jouwmening = pygame.image.load(JOUWMENING).convert_alpha()
+jouwmening = pygame.transform.rotate(jouwmening, 90)
 
 # Preload first screen
 screen.fill(BG_COLOR)
