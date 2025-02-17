@@ -192,7 +192,7 @@ def main_question():
 
     # vote choice pngs
     position_akkooord = (100, 85)
-    position_niet_akkooord = (1700, 200)
+    position_niet_akkooord = (1635, 200)
     position_geen_mening = (1350, 400)
     screen.blit(akkoord, position_akkooord)
     screen.blit(niet_akkoord, position_niet_akkooord)
