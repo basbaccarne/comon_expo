@@ -76,7 +76,7 @@ GREEN = (0, 191, 98)
 RED = (255, 49, 49)
 GREEN = (0, 191, 98)
 YELLOW = (255, 222, 89)
-FONT = pygame.font.Font(FONT_PATH, 80)
+FONT = pygame.font.Font(FONT_PATH, 100)
 RESCALE_VIDEO = (500,500)
 pygame.mouse.set_visible(False)
 
@@ -171,8 +171,8 @@ def main_question():
     """Display the main question screen"""
 
     # text scene 1 (instructies)
-    text_position1 = (400, SCREEN_HEIGHT // 2)
-    text_position2 = (500, SCREEN_HEIGHT // 2)
+    text_position1 = (500, SCREEN_HEIGHT // 2)
+    text_position2 = (600, SCREEN_HEIGHT // 2)
     line1 = FONT.render("Wat is jouw mening?", True, DARKBLUE)
     line2 = FONT.render("Druk op een knop!", True, DARKBLUE)
     rotated_line1 = pygame.transform.rotate(line1, 90)
@@ -183,7 +183,7 @@ def main_question():
     screen.blit(rotated_line2, line2_rect)
 
     # end of the lines pngs
-    position_green_line = (40, 0)
+    position_green_line = (80, 0)
     position_red_line = (1700, 280)
     position_yellow_line = (1380, 800)
     screen.blit(line_green, position_green_line)
@@ -191,7 +191,7 @@ def main_question():
     screen.blit(line_yellow, position_yellow_line)
 
     # vote choice pngs
-    position_akkooord = (40, 85)
+    position_akkooord = (80, 85)
     position_niet_akkooord = (1700, 350)
     position_geen_mening = (1350, 500)
     screen.blit(akkoord, position_akkooord)
