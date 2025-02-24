@@ -17,9 +17,9 @@ import os
 
 # GPIO button setup
 # (buttons are connected to ground and pins 4, 14 and 25)
-button1 = Button(4)
-button2 = Button(14)
-button3 = Button(25)
+button1 = Button(4, pull_up=True, bounce_time=0.2)
+button2 = Button(15, pull_up=True, bounce_time=0.2)
+button3 = Button(25, pull_up=True, bounce_time=0.2)
 
 # Initialize Pygame
 pygame.init()
