@@ -1,4 +1,4 @@
-# Comon Expo Interface test
+# Comon Expo Interface
 This repo describes the interface used for the permament [comon](https://comon.gent/en) expo in [De Krook](https://dekrook.be/en/).    
 
 Visitors are presented with questions using tangible buttons (experience has learned that touch screens trigger lesss interaction in semi-public places).
