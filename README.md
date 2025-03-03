@@ -26,6 +26,21 @@ The raspi runs a PyGame on boot ([splash](img/splash.png)). It listens to the bu
 
 ⌨️ [Main Robot Code](src/main.py)   
 🖥️ [Robot Screens](https://www.figma.com/design/EfeVKvnCxgSWbqRXbqvGUf/Comon-XPO-Bot?node-id=0-1&t=MXC9QsESPhPwYNCb-1)
+
+**Auto-Shutdown**
+Just cutting the power of the Raspi can damage the SD card. Instead we shutdown the power 10 minutes before the actual power shutdown.
+* Monday, Thuesday, Wednesday, ., Friday, Saturday: power down at ```20h00```
+* Thursday: power down at ```21h00```
+
+```console
+sudo crontab -e
+```
+
+```
+50 19 * * 1,2,3,5,6 sudo shutdown -h now
+50 20 * * 4 sudo shutdown -h now
+```
+
   
 ## Background: storing data
 We can send data back and forth using public MQTT brokers, but we want to introducce two new challenges: 
