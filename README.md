@@ -4,6 +4,11 @@ This repo describes the interface used for the permament [comon](https://comon.g
 Visitors are presented with questions using tangible buttons (experience has learned that touch screens trigger lesss interaction in semi-public places).
 These buttons are embedded in robot hands. The robot asks the visitors a question and they can high five the robot to indicate wether they agree, disagree or have no opinion on the subject. Next the vistor is presented with the responses of the other repondents.   
 
+<div align="center">  
+ <img src="img/inactie.png" width="300"> 
+</div>
+
+
 ## Components
 **Construction**
 * The main structure is a robot
